@@ -4,12 +4,6 @@ import { useState } from "react";
 import { DM_Sans } from "next/font/google";
 import Image from "next/image";
 
-const dmsans = DM_Sans({
-  weight: "600",
-  fallback: [""],
-  subsets: ["latin"],
-});
-
 function Page() {
   const router = useRouter();
   const [address, setAddress] = useState("");
@@ -24,18 +18,6 @@ function Page() {
   };
   return (
     <div className={`w-full h-[100vh]`}>
-      <div className={`flex  w-fit px-3 mx-auto justify-center items-center `}>
-        <h1 className={`text-[25px] text-center ${dmsans.className}`}>
-          Tokenbound UI
-        </h1>
-        <Image
-          src={`/tokenbound.png`}
-          alt="tokenbound"
-          width={40}
-          height={40}
-          className={`w-[40px] h-[40px]`}
-        />
-      </div>
       <div
         className={`flex space-x-2 h-full w-full justify-center items-center`}
       >

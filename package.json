@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tokenbound/sdk": "^0.4.5",
+    "@web3modal/wagmi": "^3.4.0",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
