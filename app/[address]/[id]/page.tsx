@@ -137,11 +137,10 @@ function Page() {
       }, 9000);
     }
   };
-  return (
-    <div
-      className={`flex w-full h-[100vh] justify-center space-x-[20px] px-[60px]`}
-    >
-      {currentNft ? (
+
+  const DynamicL = () => {
+    if (!isLoading && currentNft) {
+      return (
         <>
           <div className={`block space-y-3`}>
             <Image
@@ -151,7 +150,7 @@ function Page() {
               className={`w-[550px] h-[550px] rounded-[15px]`}
               alt="NFT"
             />
-            <p className={`text-[25px] font-[600]`}>{currentNft.name}</p>
+            <p className={`text-[30px] font-[700]`}>{currentNft.name}</p>
           </div>
           <div
             className={`block w-[70%] bg-neutral-900 rounded-[8px] p-[40px]`}
@@ -208,7 +207,7 @@ function Page() {
                     className={`${
                       isDeployeds === true ? "text-green-600" : "text-red-600"
                     }  block tex-[15px] text-center
-                    } ${isDeployeds === undefined && "hidden"}`}
+                } ${isDeployeds === undefined && "hidden"}`}
                   >
                     {String(isDeployeds)}
                   </p>
@@ -223,11 +222,28 @@ function Page() {
             </div>
           </div>
         </>
-      ) : (
+      );
+    } else if (isLoading) {
+      return (
         <div className={`flex w-full justify-center h-[240px] items-center`}>
           <ScaleLoader color="#ADD8E6" />
         </div>
-      )}
+      );
+    } else if (isError) {
+      return (
+        <div className={`flex w-full justify-center h-[240px] items-center`}>
+          <p className={`text-[18px] text-white font-[600] text-center`}>
+            404: Nothing to see here..........
+          </p>
+        </div>
+      );
+    }
+  };
+  return (
+    <div
+      className={`flex w-full h-[100vh] justify-center space-x-[20px] px-[60px]`}
+    >
+      <DynamicL />
     </div>
   );
 }
