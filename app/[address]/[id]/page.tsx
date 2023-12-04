@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { TokenboundClient } from "@tokenbound/sdk";
 import { WalletClient, createWalletClient, custom, http } from "viem";
-import { goerli } from "viem/chains";
+import { goerli, iotex } from "viem/chains";
 import ABI from "@/ABIS/ABI.json";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useContractRead } from "wagmi";
@@ -34,6 +34,14 @@ function Page() {
       setClient(walletClient);
     }
   }, [address]);
+
+  // useEffect(() => {
+  //   if (client && client.chain?.id !== 4689) {
+  //     client.addChain({
+  //       chain: iotex,
+  //     });
+  //   }
+  // }, [client]);
 
   const { data, isLoading, isError } = useContractRead({
     address: params.address as `0x${string}`,

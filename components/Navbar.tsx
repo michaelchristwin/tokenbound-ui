@@ -11,7 +11,7 @@ const dmsans = DM_Sans({
 function Navbar() {
   return (
     <nav
-      className={`w-full mx-auto bg-neutral-900 h-[70px] flex justify-between px-[30px]  rounded-b-[10px] items-center`}
+      className={`w-full mx-auto bg-neutral-900 h-[70px] flex justify-between lg:px-[30px] px-[20px] rounded-b-[10px] items-center`}
     >
       <div className={`flex px-3 items-center`}>
         <Image
@@ -22,7 +22,12 @@ function Navbar() {
           className={`w-[40px] rounded-full h-[40px]`}
         />
       </div>
-      <w3m-button />
+      <div className={`lg:block hidden`}>
+        <w3m-button size="md" />
+      </div>
+      <div className={`lg:hidden md:hidden xl:hidden block`}>
+        <w3m-button size="sm" />
+      </div>
     </nav>
   );
 }

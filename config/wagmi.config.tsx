@@ -1,20 +1,23 @@
 "use client";
-import { WagmiConfig, createConfig, configureChains } from "wagmi";
+import { WagmiConfig, createConfig, configureChains, useAccount } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
-import { goerli } from "viem/chains";
+import { iotex, mainnet, goerli, optimism } from "viem/chains";
 import { walletConnectProvider, EIP6963Connector } from "@web3modal/wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 
-const { publicClient, chains } = configureChains([goerli], [publicProvider()]);
+const { publicClient, chains } = configureChains(
+  [iotex, mainnet, goerli, optimism],
+  [publicProvider()]
+);
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 const wagmiConfig = createConfig({
-  autoConnect: true,
+  autoConnect: false,
   connectors: [
     new WalletConnectConnector({
-      chains,
+      chains: chains,
       options: { projectId, showQrModal: false },
     }),
     new EIP6963Connector({ chains }),
