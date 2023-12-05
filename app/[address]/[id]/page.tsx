@@ -2,17 +2,16 @@
 
 import { useParams } from "next/navigation";
 import { TokenboundClient } from "@tokenbound/sdk";
-import { WalletClient, createWalletClient, custom, http } from "viem";
+import { Chain, WalletClient, createWalletClient, custom, http } from "viem";
 import { goerli, iotex } from "viem/chains";
 import ABI from "@/ABIS/ABI.json";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useContractRead } from "wagmi";
 import { ScaleLoader } from "react-spinners";
-import { getAccount } from "wagmi/actions";
+import { getAccount, getNetwork } from "wagmi/actions";
 import Image from "next/image";
 declare let window: any;
 
-let contractAddess = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
 interface Nft {
   name: string;
   image: string;
@@ -20,6 +19,7 @@ interface Nft {
 function Page() {
   const params = useParams();
   const { address } = getAccount();
+  const { chain } = getNetwork();
   const [client, setClient] = useState<WalletClient | undefined>(undefined);
   const [currentNft, setCurrentNft] = useState<Nft | undefined>(undefined);
   const [isDeployeds, setIsDeployed] = useState<boolean | undefined>(undefined);
@@ -28,7 +28,7 @@ function Page() {
     if (address && window.ethereum) {
       const walletClient = createWalletClient({
         account: address as `0x${string}`,
-        chain: goerli,
+        chain: chain,
         transport: window.ethereum ? custom(window.ethereum) : http(),
       });
       setClient(walletClient);
@@ -38,10 +38,10 @@ function Page() {
   // useEffect(() => {
   //   if (client && client.chain?.id !== 4689) {
   //     client.addChain({
-  //       chain: iotex,
+  //       chain: chain as Chain,
   //     });
   //   }
-  // }, [client]);
+  // }, [client, chain]);
 
   const { data, isLoading, isError } = useContractRead({
     address: params.address as `0x${string}`,
@@ -66,9 +66,9 @@ function Page() {
   const tokenboundClient = useMemo(() => {
     return new TokenboundClient({
       walletClient: client,
-      chainId: 5,
+      chain: chain,
     });
-  }, [client]);
+  }, [client, chain]);
 
   const createAccount = useCallback(async () => {
     if (!tokenboundClient || !address) return;
@@ -123,18 +123,6 @@ function Page() {
     return nft;
   }, [tokenboundClient, getTBAccount, address]);
 
-  const tokenAccount = useContractRead({
-    address: params.address as `0x${string}`,
-    args: [params.id],
-    functionName: "tokenAccount",
-    abi: ABI,
-  });
-  const start = String(tokenAccount.data).slice(0, 5);
-  const finish = String(tokenAccount.data).slice(-5);
-  const copyAdd = () => {
-    navigator.clipboard.writeText(tokenAccount.data as string);
-  };
-
   const isDeployedClick = async () => {
     const res = await isAccountDeployed();
     console.log(res);
@@ -162,34 +150,9 @@ function Page() {
             <p className={`text-[30px] font-[700]`}>{currentNft.name}</p>
           </div>
           <div
-            className={`block w-[70%] bg-neutral-900 rounded-[8px] p-[40px]`}
+            className={`block w-[70vw] bg-neutral-900 rounded-[8px] p-[40px]`}
           >
             <div>
-              <div
-                className={`flex text-[#1098fc] bg-[#21384a] rounded-[15px] space-x-1 px-2 w-fit h-[30px] items-center justify-center`}
-              >
-                <p className={`text-[16px]`}>
-                  {start}...{finish}
-                </p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                  role="img"
-                  className={`w-4 h-4 cursor-pointer`}
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 24 24"
-                  onClick={copyAdd}
-                >
-                  <g fill="none">
-                    <path d="M24 0v24H0V0h24ZM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018Zm.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022Zm-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01l-.184-.092Z"></path>
-                    <path
-                      fill="currentColor"
-                      d="M19 2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2V4a2 2 0 0 1 2-2h10Zm-4 6H5v12h10V8Zm-5 7a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h2Zm9-11H9v2h6a2 2 0 0 1 2 2v8h2V4Zm-7 7a1 1 0 0 1 .117 1.993L12 13H8a1 1 0 0 1-.117-1.993L8 11h4Z"
-                    ></path>
-                  </g>
-                </svg>
-              </div>
               <div
                 className={`grid grid-cols-2 gap-y-8 gap-x-[50px] mt-[70px] w-[350px]`}
               >
@@ -250,7 +213,7 @@ function Page() {
   };
   return (
     <div
-      className={`flex w-full h-[100vh] justify-center space-x-[20px] px-[60px]`}
+      className={`flex w-full h-[100vh] justify-center space-x-[20px] px-[2%]`}
     >
       <DynamicL />
     </div>
