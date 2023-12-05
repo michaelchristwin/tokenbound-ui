@@ -67,6 +67,7 @@ function Page() {
     return new TokenboundClient({
       walletClient: client,
       chain: chain,
+      chainId: chain?.id,
     });
   }, [client, chain]);
 
@@ -144,33 +145,37 @@ function Page() {
               src={currentNft.image}
               width={550}
               height={550}
-              className={`w-[550px] h-[550px] rounded-[15px]`}
+              className={`lg:w-[550px] lg:h-[550px] md:w-[550px] md:h-[550px] w-[97%] block mx-auto h-[300px] rounded-[15px]`}
               alt="NFT"
             />
-            <p className={`text-[30px] font-[700]`}>{currentNft.name}</p>
+            <p
+              className={`lg:text-[30px] md:text-[30px] text-[20px] lg:text-start md:text-start text-center font-[700]`}
+            >
+              {currentNft.name}
+            </p>
           </div>
           <div
-            className={`block w-[70vw] bg-neutral-900 rounded-[8px] p-[40px]`}
+            className={`block lg:w-[70vw] lg:mt-0 md:mt-0 xl:mt-0 mt-8 md:w-[70vw] w-full bg-neutral-900 rounded-[8px] lg:p-[40px] md:p-[30px] p-[5px]`}
           >
             <div>
               <div
-                className={`grid grid-cols-2 gap-y-8 gap-x-[50px] mt-[70px] w-[350px]`}
+                className={`grid grid-cols-2 gap-y-8 lg:gap-x-[50px] md:gap-x-[50px] gap-x-[10px] lg:mt-[70px] mt-[70px] lg:w-[350px] md:w-[350px] w-[300px]`}
               >
                 <button
-                  className={`px-2 block h-[33px] bg-white hover:opacity-75 active:opacity-60 mx-auto text-black rounded-lg w-[150px]`}
+                  className={`px-2 block h-[33px] bg-white hover:opacity-75 active:opacity-60 mx-auto text-black rounded-lg md:w-[150px] w-[140px] lg:w-[150px]`}
                   onClick={createAccount}
                 >
                   Create Account
                 </button>
                 <button
-                  className={`px-2 h-[33px] block bg-white hover:opacity-75 active:opacity-60 mx-auto text-black rounded-lg w-[150px]`}
+                  className={`px-2 h-[33px] block bg-white hover:opacity-75 active:opacity-60 mx-auto text-black rounded-lg md:w-[150px] w-[140px] lg:w-[150px]`}
                   onClick={getTBAccount}
                 >
                   Get Account
                 </button>
                 <div className={`block space-y-2 h-fit`}>
                   <button
-                    className={`px-2 h-[33px] block bg-white hover:opacity-75 active:opacity-60 mx-auto text-black rounded-lg w-[150px]`}
+                    className={`px-2 h-[33px] block bg-white hover:opacity-75 active:opacity-60 mx-auto text-black rounded-lg md:w-[150px] w-[140px] lg:w-[150px]`}
                     onClick={() => isDeployedClick()}
                   >
                     Is Deployed
@@ -185,7 +190,7 @@ function Page() {
                   </p>
                 </div>
                 <button
-                  className={`px-2 h-[33px] block bg-white hover:opacity-75 active:opacity-60 mx-auto text-black rounded-lg w-[150px]`}
+                  className={`px-2 h-[33px] block bg-white hover:opacity-75 active:opacity-60 mx-auto text-black rounded-lg md:w-[150px] w-[120px] lg:w-[150px]`}
                   onClick={getNft}
                 >
                   Get NFT
@@ -213,7 +218,7 @@ function Page() {
   };
   return (
     <div
-      className={`flex w-full h-[100vh] justify-center space-x-[20px] px-[2%]`}
+      className={`lg:flex md:flex block w-full lg:h-[100vh] h-full justify-center lg:space-x-[20px] space-x-0 px-[2%]`}
     >
       <DynamicL />
     </div>
