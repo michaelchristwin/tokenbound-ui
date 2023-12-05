@@ -14,7 +14,7 @@ const { publicClient, chains } = configureChains(
 );
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 const wagmiConfig = createConfig({
-  autoConnect: false,
+  autoConnect: true,
   connectors: [
     new WalletConnectConnector({
       chains: chains,

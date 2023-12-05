@@ -55,6 +55,7 @@ function Page() {
       try {
         const myNft = await fetch(data as string);
         const res = await myNft.json();
+
         const totou: Nft = { name: res.name, image: res.image };
         setCurrentNft(totou);
       } catch (err) {
