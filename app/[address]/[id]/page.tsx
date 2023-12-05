@@ -148,7 +148,7 @@ function Page() {
   };
 
   const DynamicL = () => {
-    if (!isLoading && currentNft) {
+    if (currentNft) {
       return (
         <>
           <div className={`block space-y-3`}>
